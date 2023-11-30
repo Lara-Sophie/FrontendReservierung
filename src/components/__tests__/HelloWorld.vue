@@ -36,33 +36,34 @@ import type {Ref} from 'vue'
 
 defineProps<{
     title: string
+
 }>()
 
-type Thing = { id?: number, name: string, price: number }
+type Tischreservierung_herthas_diner = { id?: number, name: string, price: number }
 
-const items: Ref<Thing[]> = ref([])
+const items: Ref<Tischreservierung_herthas_diner[]> = ref([])
 const nameField = ref('')
 const priceField = ref(0)
 
 function loadReservierung () {
-    const endpoint = 'http://localhost:8080/reservierung'
+    const endpoint = '/reservierung'
     const requestOptions: RequestInit = {
         method: 'GET',
         redirect: 'follow'
     }
     fetch(endpoint, requestOptions)
         .then(response => response.json())
-        .then(result => result.forEach (thing => {
-            this.items.push(thing)
+        .then(result => result.forEach (reservierung => {
+            items.value.push(reservierung)
         }))
         .catch(error => console.log('error', error))
 }
 function save () {
-    const endpoint = 'http://localhost:8080/reservierung'
+    const endpoint = '/reservierung'
     const data = {
-        name: this.name,
-        price: this.price,
-        id: this.id
+        name: nameField.value,
+        price: priceField.value,
+
     }
     const requestOptions = {
         method: 'POST',
@@ -71,6 +72,7 @@ function save () {
         },
         body: JSON.stringify(data)
     }
+    console.log(data);
     fetch(endpoint, requestOptions)
         .then(response => response.json())
         .then(data => {
