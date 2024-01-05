@@ -1,103 +1,131 @@
 <template>
-    <h3> {{ title }} </h3>
     <div>
-        <input v-model="nameField" placeholder="Name" type="text">
-        <input v-model="priceField" placeholder="Price" @keyup.enter="save()">
-        <button type="button" @click="save()">Save</button>
-    </div>
-    <div>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-if="items.length === 0">
-                <td colspan="2">No products yet</td>
-            </tr>
-            <tr v-for="item in items" :key="item.id">
-                <td>{{item.name}}</td>
-                <td>{{item.price}}</td>
-            </tr>
-            <tr>
-                <td>{{ nameField }}</td>
-                <td>{{ priceField }}</td>
-            </tr>
-            </tbody>
-        </table>
+        <h2>Kundenliste</h2>
+        <ul>
+            <li v-for="kunde in kunden" :key="kunde.id" class="kunde-item">
+                {{ kunde.name }} ({{ kunde.email }})
+                <button @click="deleteKunde(kunde.id)" class="action-button">Löschen</button>
+                <button @click="editKunde(kunde.id)" class="action-button">Bearbeiten</button>
+            </li>
+        </ul>
+
+        <div class="form-container">
+            <h2>Neuen Kunden hinzufügen</h2>
+            <form @submit.prevent="saveKunde">
+                <label class="form-label">Name:</label>
+                <input v-model="neuerKunde.name" class="form-input" required />
+                <br />
+                <label class="form-label">Email:</label>
+                <input v-model="neuerKunde.email" type="email" class="form-input" required />
+                <br />
+                <button type="submit" class="form-button">Speichern</button>
+            </form>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
-import type {Ref} from 'vue'
+import { ref, onMounted } from 'vue'
+import type { Ref } from 'vue'
 
 defineProps<{
     title: string
-
 }>()
 
-type Tischreservierung_herthas_diner = { id?: number, name: string, price: number }
+const kunden: Ref<{ id?: number; name: string; email: string }[]> = ref([])
+const neuerKunde = ref<{ name: string; email: string }>({ name: '', email: '' })
 
-const items: Ref<Tischreservierung_herthas_diner[]> = ref([])
-const nameField = ref('')
-const priceField = ref(0)
-
-function loadReservierung () {
-    const endpoint = '/reservierung'
-    const requestOptions: RequestInit = {
-        method: 'GET',
-        redirect: 'follow'
+const loadKunden = async () => {
+    try {
+        const response = await fetch('/kunde') // Ändern Sie den Endpunkt entsprechend
+        const data = await response.json()
+        kunden.value = data
+    } catch (error) {
+        console.error('Fehler beim Laden der Kunden:', error)
     }
-    fetch(endpoint, requestOptions)
-        .then(response => response.json())
-        .then(result => result.forEach (reservierung => {
-            items.value.push(reservierung)
-        }))
-        .catch(error => console.log('error', error))
 }
-function save () {
-    const endpoint = '/reservierung'
-    const data = {
-        name: nameField.value,
-        price: priceField.value,
 
-    }
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }
-    console.log(data);
-    fetch(endpoint, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data)
+const saveKunde = async () => {
+    try {
+        const response = await fetch('/kunde', { // Ändern Sie den Endpunkt entsprechend
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(neuerKunde.value),
         })
-        .catch(error => console.log('error', error))
+        await response.json()
+        neuerKunde.value = { name: '', email: '' }
+        loadKunden()
+    } catch (error) {
+        console.error('Fehler beim Speichern des Kunden:', error)
+    }
 }
 
+const deleteKunde = async (id: number) => {
+    try {
+        await fetch(`/kunde/${id}`, { // Ändern Sie den Endpunkt entsprechend
+            method: 'DELETE',
+        })
+        loadKunden()
+    } catch (error) {
+        console.error('Fehler beim Löschen des Kunden:', error)
+    }
+}
 
-// Lifecycle hooks
+const editKunde = async (id: number) => {
+    try {
+        // Hier könntest du Logik für den API-Aufruf zum Bearbeiten des Kunden hinzufügen
+    } catch (error) {
+        console.error('Fehler beim Bearbeiten des Kunden:', error)
+    }
+}
+
+// Lifecycle hook
 onMounted(() => {
-    loadReservierung()
-
+    loadKunden()
 })
 </script>
 
-<style scoped>
-h3 {
-    text-align: center;
+<style>
+/* Kopieren Sie Ihr vorhandenes Styling hier */
+.kunde-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
-table {
-    margin-left: auto;
-    margin-right: auto;
+
+.action-button {
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
 }
-button {
-    color: blue;
+
+.form-container {
+    margin-top: 20px;
+}
+
+.form-label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.form-input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.form-button {
+    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
 }
 </style>

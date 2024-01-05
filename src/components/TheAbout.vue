@@ -1,3 +1,5 @@
+<!-- Reservierung.vue -->
+
 <template>
     <div class="app-container">
         <header class="header">
@@ -7,7 +9,6 @@
             <table class="reservierungen-table">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Kunden ID</th>
                     <th>Tisch IDs</th>
                     <th>Startzeit</th>
@@ -29,11 +30,26 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="neue-reservierung-form">
+                <h2>Neue Reservierung hinzufügen</h2>
+                <form @submit.prevent="saveReservierung">
+                    <label for="kundenId">Kunden ID:</label>
+                    <input v-model="neueReservierung.kundenId" type="number" required>
+                    <label for="tischIds">Tisch IDs:</label>
+                    <input v-model="neueReservierung.tischIds" type="text" required>
+                    <label for="startZeit">Startzeit:</label>
+                    <input v-model="neueReservierung.startZeit" type="datetime-local" required>
+                    <label for="endZeit">Endzeit:</label>
+                    <input v-model="neueReservierung.endZeit" type="datetime-local" required>
+                    <button type="submit">Reservierung hinzufügen</button>
+                </form>
+            </div>
         </main>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     data() {
         return {
@@ -45,6 +61,9 @@ export default {
                 endZeit: "",
             },
         };
+    },
+    mounted() {
+        this.loadReservierungen();
     },
     methods: {
         async loadReservierungen() {
@@ -66,12 +85,7 @@ export default {
                     body: JSON.stringify(this.neueReservierung),
                 });
                 await response.json();
-                // Formular leeren
-                this.neueReservierung.kundenId = 0;
-                this.neueReservierung.tischIds = "";
-                this.neueReservierung.startZeit = "";
-                this.neueReservierung.endZeit = "";
-                // Reservierungen neu laden
+                this.clearForm();
                 this.loadReservierungen();
             } catch (error) {
                 console.error("Fehler beim Speichern der Reservierung:", error);
@@ -82,21 +96,20 @@ export default {
                 await fetch(`/reservierung/${id}`, {
                     method: 'DELETE',
                 });
-                // Reservierungen neu laden
                 this.loadReservierungen();
             } catch (error) {
                 console.error("Fehler beim Löschen der Reservierung:", error);
             }
         },
         async editReservierung(id) {
-            try {
-                // Hier könntest du Logik für den API-Aufruf zum Bearbeiten der Reservierung hinzufügen
-                // Zum Beispiel, um die aktuelle Reservierung mit der ID zu holen und in einem Bearbeitungsformular zu verwenden
-            } catch (error) {
-                console.error("Fehler beim Bearbeiten der Reservierung:", error);
-            }
+            // Implementiere die Logik für die Bearbeitung hier, wenn benötigt
         },
-
+        clearForm() {
+            this.neueReservierung.kundenId = 0;
+            this.neueReservierung.tischIds = "";
+            this.neueReservierung.startZeit = "";
+            this.neueReservierung.endZeit = "";
+        },
     },
 };
 </script>
@@ -108,7 +121,7 @@ export default {
 }
 
 .header {
-    background-color: #3498db; /* Blauton für den Header */
+    background-color: #3498db;
     color: #fff;
     padding: 20px;
 }
@@ -119,18 +132,19 @@ export default {
     margin-top: 20px;
 }
 
-.reservierungen-table th, .reservierungen-table td {
+.reservierungen-table th,
+.reservierungen-table td {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
 .reservierungen-table th {
-    background-color: #3498db; /* Blauton für die Kopfzeile der Tabelle */
+    background-color: #3498db;
     color: #fff;
 }
 
 .reservierungen-table button {
-    background-color: #3498db; /* Blauton für die Button-Farbe */
+    background-color: #3498db;
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -139,7 +153,30 @@ export default {
 }
 
 .reservierungen-table button:hover {
-    background-color: #2980b9; /* Dunklerer Blauton beim Hovern über den Button */
+    background-color: #2980b9;
+}
+
+.neue-reservierung-form {
+    margin-top: 20px;
+}
+
+.neue-reservierung-form h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.neue-reservierung-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.neue-reservierung-form label {
+    margin-top: 10px;
+}
+
+.neue-reservierung-form input,
+.neue-reservierung-form button {
+    margin-top: 5px;
 }
 </style>
-

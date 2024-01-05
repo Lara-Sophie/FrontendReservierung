@@ -1,137 +1,59 @@
 <template>
-    <div>
-        <h2>Tische</h2>
-        <ul>
-            <li v-for="tisch in tische" :key="tisch.id">
-                Tischnr: {{ tisch.tischnummer }}, Anzahl Plätze: {{ tisch.anzahlPlaetze }}
-                <button @click="deleteTisch(tisch.id)">Löschen</button>
-                <button @click="editTisch(tisch.id)">Bearbeiten</button>
-            </li>
-        </ul>
+    <div class="welcome-container">
+        <!-- Hier wird das Bild als Hintergrund eingefügt -->
+        <div class="background-image"></div>
 
-        <div>
-            <h2>Neuen Tisch erstellen</h2>
-            <form @submit.prevent="saveTisch">
-                <label>Tischnr:</label>
-                <input v-model="neuerTisch.tischnummer" type="text" required />
-                <br />
-                <label>Anzahl Plätze:</label>
-                <input v-model="neuerTisch.anzahlPlaetze" type="number" required />
-                <br />
-                <button type="submit">Speichern</button>
-            </form>
+        <div class="content">
+            <h1 class="industrial-title">Willkommen!</h1>
+            <p class="industrial-text">Genieße deine Zeit auf unserer Website.</p>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
+    name: 'WelcomePage',
     data() {
-        return {
-            tische: [],
-            neuerTisch: {
-                tischnummer: "",
-                anzahlPlaetze: 0,
-            },
-        };
+        return {};
     },
-    mounted() {
-        this.loadTische();
-    },
-    methods: {
-        async loadTische() {
-            try {
-                const response = await fetch('/reservierung');
-                const data = await response.json();
-                this.tische = data;
-            } catch (error) {
-                console.error("Fehler beim Laden der Tische:", error);
-            }
-        },
-        async saveTisch() {
-            try {
-                const response = await fetch('/reservierung', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(this.neuerTisch),
-                });
-                await response.json();
-                // Formular leeren
-                this.neuerTisch.tischnummer = "";
-                this.neuerTisch.anzahlPlaetze = 0;
-                // Tische neu laden
-                this.loadTische();
-            } catch (error) {
-                console.error("Fehler beim Speichern des Tischs:", error);
-            }
-        },
-        async deleteTisch(id) {
-            try {
-                await fetch(`/reservierung/${id}`, {
-                    method: 'DELETE',
-                });
-                // Tische neu laden
-                this.loadTische();
-            } catch (error) {
-                console.error("Fehler beim Löschen des Tischs:", error);
-            }
-        },
-        async editTisch(id) {
-            try {
-                // Hier könntest du Logik für den API-Aufruf zum Bearbeiten des Tischs hinzufügen
-                // Zum Beispiel, um den aktuellen Tisch mit der ID zu holen und in einem Bearbeitungsformular zu verwenden
-            } catch (error) {
-                console.error("Fehler beim Bearbeiten des Tischs:", error);
-            }
-        },
-    },
-
 };
 </script>
 
-<style>
-/* Style für Tisch-Elemente */
-.tisch-item {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+<style scoped>
+/* Industrial Look Styling für Welcome Page */
+.welcome-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Style für Aktionsschaltflächen */
-.action-button {
-    margin-left: 10px;
-    cursor: pointer;
-    background-color: #007bff;
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    //background-image: url('/path/to/your/image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 50px 20px;
     color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
 }
 
-/* Style für Formularelemente */
-.form-container {
-    margin-top: 20px;
+.industrial-title {
+    font-size: 30px;
+    margin-bottom: 20px;
 }
 
-.form-label {
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-.form-input {
-    margin-bottom: 10px;
-    padding: 5px;
-}
-
-.form-button {
-    cursor: pointer;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+.industrial-text {
+    font-size: 18px;
 }
 </style>
