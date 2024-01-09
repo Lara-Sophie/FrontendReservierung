@@ -1,182 +1,224 @@
-<!-- Reservierung.vue -->
-
 <template>
-    <div class="app-container">
-        <header class="header">
-            <h1>Tischreservierung-Herthas-Diner</h1>
-        </header>
-        <main>
-            <table class="reservierungen-table">
-                <thead>
-                <tr>
-                    <th>Kunden ID</th>
-                    <th>Tisch IDs</th>
-                    <th>Startzeit</th>
-                    <th>Endzeit</th>
-                    <th>Aktionen</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="reservierung in reservierungen" :key="reservierung.id">
-                    <td>{{ reservierung.id }}</td>
-                    <td>{{ reservierung.kundenId }}</td>
-                    <td>{{ reservierung.tischIds }}</td>
-                    <td>{{ reservierung.startZeit }}</td>
-                    <td>{{ reservierung.endZeit }}</td>
-                    <td>
-                        <button @click="editReservierung(reservierung.id)">Bearbeiten</button>
-                        <button @click="deleteReservierung(reservierung.id)">Löschen</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <h2>Reservierung Hethas-Diner </h2>
+    <p>Wähle dir einen Slot aus und drücke den button reservieren.</p>
+    <p>Zum Stornieren, suche deinen reservierten slot und drücke den button stornieren. </p>
 
-            <div class="neue-reservierung-form">
-                <h2>Neue Reservierung hinzufügen</h2>
-                <form @submit.prevent="saveReservierung">
-                    <label for="kundenId">Kunden ID:</label>
-                    <input v-model="neueReservierung.kundenId" type="number" required>
-                    <label for="tischIds">Tisch IDs:</label>
-                    <input v-model="neueReservierung.tischIds" type="text" required>
-                    <label for="startZeit">Startzeit:</label>
-                    <input v-model="neueReservierung.startZeit" type="datetime-local" required>
-                    <label for="endZeit">Endzeit:</label>
-                    <input v-model="neueReservierung.endZeit" type="datetime-local" required>
-                    <button type="submit">Reservierung hinzufügen</button>
-                </form>
+    <table>
+        <tr>
+            <th>DAY</th>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+            <th>SUN</th>
+        </tr>
+        <tr>
+            <th>DATE</th>
+            <th>22</th>
+            <th>23</th>
+            <th>24</th>
+            <th>25</th>
+            <th>26</th>
+            <th>27</th>
+            <th>28</th>
+        </tr>
+        <div>
+            <tr>
+                <td>Tisch 1 für 4 Personen</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+            </tr>
+        </div>
+        <tr>
+            <div>
+                <td>Tisch 1 für 4 Personen</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
             </div>
-        </main>
+        </tr>
+        <tr>
+            <td>Tisch 2 für 5 Personen</td>
+            <td> 18-20</td>
+            <td> 18-20</td>
+            <td> 18-20</td>
+            <td> 18-20</td>
+            <td> 18-20</td>
+            <td> 18-20</td>
+            <td> 18-20</td>
+        </tr>
+        <tr>
+            <td>Tisch 2 für 5 Personen</td>
+            <td> 20-22</td>
+            <td> 20-22</td>
+            <td> 20-22</td>
+            <td> 20-22</td>
+            <td> 20-22</td>
+            <td> 20-22</td>
+            <td> 20-22</td>
+        </tr>
+        <tr>
+            <div>
+                <td>Tisch 3 für 6 Personen</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+                <td> 18-20</td>
+            </div>
+        </tr>
+        <tr>
+            <div>
+                <td>Tisch 3 für 6 Personen</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+                <td> 20-22</td>
+            </div>
+        </tr>
+    </table>
+    <div>
+        <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
+    <button type="button" @click="stornieren">Stornieren</button>
+    <p>Hier kannst du dein Profil Löschen</p>
+    <button type="button" @click="deleteUser">Löschen</button>
     </div>
 </template>
 
-<script lang="ts">
-export default {
-    data() {
-        return {
-            reservierungen: [],
-            neueReservierung: {
-                kundenId: 0,
-                tischIds: "",
-                startZeit: "",
-                endZeit: "",
+<script setup lang="ts">
+import { ref, reactive } from "vue";
+
+const Benutzername = ref('');
+const reservierteSlots: { tischId: number; slot: boolean }[] = reactive([]);
+
+const handleReservieren = (event: MouseEvent) => {
+    // Extrahiere die Daten aus den data-* Attributen des Elements
+    const tischId = (event.target as HTMLElement).dataset.tischId;
+    const slot = (event.target as HTMLElement).dataset.slot;
+
+    // Überprüfe, ob die Werte vorhanden sind, und konvertiere sie nach Bedarf
+    if (tischId && slot) {
+        reservieren(Number(tischId), slot === "true");
+    }
+};
+
+const reservieren = (tischId:number, slot:boolean) => {
+    // Überprüfen, ob der Slot bereits reserviert ist
+    if (!reservierteSlots.some(r => r.tischId === tischId && r.slot === slot)) {
+        reservierteSlots.push({ tischId, slot });
+        console.log('Slot reserviert:', { tischId, slot });
+    } else {
+        console.log('Slot bereits reserviert');
+    }
+};
+
+const stornieren = () => {
+    const selectedReservierung = window.prompt('Geben Sie die Nummer der Reservierung ein:');
+    if (selectedReservierung !== null) {
+        reservierteSlots.splice(Number(selectedReservierung), 1);
+        console.log('Reservierung storniert:', selectedReservierung);
+    }
+};
+
+const deleteUser = async () => {
+    const endpoint = 'http://localhost:8080/kunde';
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        };
-    },
-    mounted() {
-        this.loadReservierungen();
-    },
-    methods: {
-        async loadReservierungen() {
-            try {
-                const response = await fetch('/reservierung');
-                const data = await response.json();
-                this.reservierungen = data;
-            } catch (error) {
-                console.error("Fehler beim Laden der Reservierungen:", error);
-            }
-        },
-        async saveReservierung() {
-            try {
-                const response = await fetch('/reservierung', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(this.neueReservierung),
-                });
-                await response.json();
-                this.clearForm();
-                this.loadReservierungen();
-            } catch (error) {
-                console.error("Fehler beim Speichern der Reservierung:", error);
-            }
-        },
-        async deleteReservierung(id) {
-            try {
-                await fetch(`/reservierung/${id}`, {
-                    method: 'DELETE',
-                });
-                this.loadReservierungen();
-            } catch (error) {
-                console.error("Fehler beim Löschen der Reservierung:", error);
-            }
-        },
-        async editReservierung(id) {
-            // Implementiere die Logik für die Bearbeitung hier, wenn benötigt
-        },
-        clearForm() {
-            this.neueReservierung.kundenId = 0;
-            this.neueReservierung.tischIds = "";
-            this.neueReservierung.startZeit = "";
-            this.neueReservierung.endZeit = "";
-        },
-    },
+            body: JSON.stringify({Benutzername: Benutzername.value}),
+        });
+
+        const result = await response.json();
+        console.log('Success:', result);
+
+        // Führe weitere Aktionen nach dem Löschen durch, wenn nötig
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 </script>
 
-<style scoped>
-.app-container {
-    font-family: Arial, sans-serif;
-    text-align: center;
+<style>
+/* Allgemeiner Hintergrund und Schriftstil */
+body {
+    background-color: #f5f5dc; /* Beige */
+    color: #4d3319; /* Dunkles Braun für den Text */
+    font-family: 'Georgia', serif; /* Rustikale Schriftart */
+    margin: 0;
+    padding: 0;
 }
 
-.header {
-    background-color: #3498db;
-    color: #fff;
+/* Container-Styling */
+div {
+    background-color: #d2b48c; /* Hellbraun */
     padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
 }
 
-.reservierungen-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+/* Überschriften */
+h2 {
+    color: #5e4934; /* Dunkles Braun */
 }
 
-.reservierungen-table th,
-.reservierungen-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-.reservierungen-table th {
-    background-color: #3498db;
-    color: #fff;
-}
-
-.reservierungen-table button {
-    background-color: #3498db;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.reservierungen-table button:hover {
-    background-color: #2980b9;
-}
-
-.neue-reservierung-form {
-    margin-top: 20px;
-}
-
-.neue-reservierung-form h2 {
-    font-size: 20px;
+/* Eingabefelder */
+input {
+    padding: 10px;
     margin-bottom: 10px;
+    border: 1px solid #d2b48c; /* Hellbraun */
+    border-radius: 5px;
+    background-color: #fff; /* Weiß */
+    color: #4d3319; /* Dunkles Braun für den Text */
 }
 
-.neue-reservierung-form form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Reservierungsbuttons */
+button {
+    padding: 10px 20px;
+    background-color: #8b735b; /* Dunkles Beige */
+    color: #fff; /* Weiß für den Text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
 }
 
-.neue-reservierung-form label {
-    margin-top: 10px;
+/* Button-Hover-Effekt */
+button:hover {
+    background-color: #6a5c49; /* Dunkleres Beige beim Hover */
 }
 
-.neue-reservierung-form input,
-.neue-reservierung-form button {
-    margin-top: 5px;
+/* Löschen-Button-Styling */
+button.delete {
+    background-color: #ff0000; /* Rot */
+}
+
+/* Zusätzlicher Stil für den Container um die Buttons */
+div button {
+    margin-top: 15px;
+}
+
+/* Text für Profil löschen */
+p {
+    color: #8b735b; /* Dunkles Beige */
 }
 </style>
