@@ -12,16 +12,16 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
-      path: '/win',
-      name: 'winview',
+      path: '/reservieren',
+      name: 'reservieren',
       //@ts-ignore
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/ReservierenView.vue')
     },
     {
-      path: '/lost',
-      name: 'lostview',
+      path: '/registrieren',
+      name: 'registrieren',
       //@ts-ignore
-      component: () => import('../views/WelcomeView.vue')
+      component: () => import('../views/RegistrierenView.vue')
     }
   ]
 })

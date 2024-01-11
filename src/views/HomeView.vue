@@ -1,71 +1,80 @@
 <template>
-    <div>
-        <h2>Registrieren</h2>
-        <p>Benutzername</p>
-        <input v-model="benutzernameField" placeholder="Benutzername" type="text">
-        <p>Name</p>
-        <input v-model="nameField" placeholder="Name" type="text">
-        <p>E-Mail</p>
-        <input v-model="mailField" placeholder="E-Mail" type="text">
-        <p>Allergien</p>
-        <input v-model="allergienField" placeholder="Allergien" type="text">
-        <p>Telefonnummer</p>
-        <input v-model="telefonnummerField" placeholder="Telefonnummer" type="text">
-        <p></p>
-        <button type="button" @click="save" >registrieren</button>
-        <p>Klicke hier um einen tisch zu reservieren</p>
-        <button type="button" @click="navigateToAboutPage" >reservieren</button>
+    <div class="welcome-container">
+        <div class="background-image"></div>
+
+        <div class="content">
+            <h1 class="industrial-title">Willkommen!</h1>
+            <p class="industrial-text">bei Herthas_Diner</p>
+
+            <div>
+                <h2>Anmelden</h2>
+                <p>Benutzername</p>
+                <input v-model="Benutzername" placeholder="Benutzername" type="text">
+                <p></p>
+                <button type="button" @click="save">anmelden</button>
+                <p>Klicke hier um einen tisch zu reservieren</p>
+                <RouterLink to="/reservieren">reservieren</RouterLink>
+                <p>Wenn du noch nicht angemeldet bist dann registriere dich bitte hier:</p>
+                <RouterLink to="/registrieren">registrieren</RouterLink>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import {useRouter} from "vue-router";
+import { ref, onMounted } from 'vue';
+import {RouterLink, useRouter} from "vue-router";
+import ReservierenView from "@/views/ReservierenView.vue";
 
-const benutzernameField = ref('');
-const nameField = ref('');
-const mailField = ref('');
-const allergienField = ref('');
-const telefonnummerField = ref('');
+const Benutzername = ref('');
 
-const navigateToAboutPage = (event: MouseEvent) => {
-    const userId = (event.target as HTMLElement).getAttribute('data-user-id');
-    if (userId) {
-        const router = useRouter();
-        router.push({ name: 'TheAbout', params: { id: userId } });
+const save = async () => {
+    const endpoint = 'http://localhost:8080/kunden';
+    const data = { Benutzername };
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log('Success:', result);
+
+    } catch (error) {
+        console.error('Error:', error);
     }
 };
 
-function save() {
+
+
+
+// Lade Reservierungen nach dem Laden der Komponente
+onMounted(() => {
+    loadReservierung();
+});
+
+const loadReservierung = async () => {
     const endpoint = 'http://localhost:8080/reservierungen';
-    const data = {
-        benutzername: benutzernameField.value,
-        name: nameField.value,
-        email: mailField.value,
-        allergien: allergienField.value,
-        telefonnummer: telefonnummerField.value
-    };
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    };
-
-    fetch(endpoint, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Hier können Sie weitere Aktionen nach dem Speichern ausführen, wenn nötig
-        })
-        .catch(error => console.error('Error:', error));
-}
+    try {
+        const response = await fetch(endpoint,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const result = await response.json();
+    } catch (error) {
+        console.error('Error loading reservations:', error);
+    }
+};
 </script>
 
-
-<style>
+<style scoped>
 /* Allgemeiner Hintergrund und Schriftstil */
 body {
     background-color: #f5f5dc; /* Beige */
@@ -76,7 +85,7 @@ body {
 }
 
 /* Container-Styling */
-div {
+.welcome-container {
     background-color: #d2b48c; /* Hellbraun */
     padding: 20px;
     margin: 20px;
@@ -84,7 +93,7 @@ div {
 }
 
 /* Überschriften */
-h2 {
+.content h2 {
     color: #5e4934; /* Dunkles Braun */
 }
 
@@ -111,5 +120,13 @@ button {
 /* Button-Hover-Effekt */
 button:hover {
     background-color: #6a5c49; /* Dunkleres Beige beim Hover */
+}
+.industrial-title {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.industrial-text {
+    font-size: 18px;
 }
 </style>

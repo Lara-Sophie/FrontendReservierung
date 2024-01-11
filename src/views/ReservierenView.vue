@@ -2,28 +2,27 @@
     <h2>Reservierung Hethas-Diner </h2>
     <p>Wähle dir einen Slot aus und drücke den button reservieren.</p>
     <p>Zum Stornieren, suche deinen reservierten slot und drücke den button stornieren. </p>
-
     <table>
-        <tr>
-            <th>DAY</th>
-            <th>MON</th>
-            <th>TUE</th>
-            <th>WED</th>
-            <th>THU</th>
-            <th>FRI</th>
-            <th>SAT</th>
-            <th>SUN</th>
-        </tr>
-        <tr>
-            <th>DATE</th>
-            <th>22</th>
-            <th>23</th>
-            <th>24</th>
-            <th>25</th>
-            <th>26</th>
-            <th>27</th>
-            <th>28</th>
-        </tr>
+    <tr>
+        <th class="day">DAY</th>
+        <th class="day">MON</th>
+        <th class="day">TUE</th>
+        <th class="day">WED</th>
+        <th class="day">THU</th>
+        <th class="day">FRI</th>
+        <th class="day">SAT</th>
+        <th class="day">SUN</th>
+    </tr>
+    <tr>
+        <th class="date">DATE</th>
+        <th class="date">22</th>
+        <th class="date">23</th>
+        <th class="date">24</th>
+        <th class="date">25</th>
+        <th class="date">26</th>
+        <th class="date">27</th>
+        <th class="date">28</th>
+    </tr>
         <div>
             <tr>
                 <td>Tisch 1 für 4 Personen</td>
