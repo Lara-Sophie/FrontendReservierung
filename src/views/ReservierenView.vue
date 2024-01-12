@@ -103,6 +103,8 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 
+
+
 const Benutzername = ref('');
 const reservierteSlots: { tischId: number; slot: boolean }[] = reactive([]);
 
