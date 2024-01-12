@@ -1,10 +1,5 @@
 // @ts-ignore
-<<<<<<< HEAD
-import { createRouter, createWebHistory } from 'vue-router'
-=======
 import { createRouter, createWebHistory } from 'vue-router';
->>>>>>> ca0b7dcfc1efa73e62cb5b7017f435175f91366c
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
