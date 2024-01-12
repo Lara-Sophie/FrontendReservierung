@@ -10,7 +10,10 @@ export default defineConfig({
   ],
     server: {
         proxy: {
-            '/reservierung': 'http://localhost:8080'
+            '/reservierungen': 'http://localhost:8080',
+            '/kunden': 'http://localhost:8080',
+            '/tischslot': 'http://localhost:8080',
+            '/tische': 'http://localhost:8080'
         }
     },
  resolve: {

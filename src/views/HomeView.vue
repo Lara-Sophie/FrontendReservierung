@@ -1,28 +1,34 @@
 <template>
-    <div class="welcome-container">
-        <div class="background-image"></div>
+    <div name= "container" class="grid-parent">
+        <div name="image" class="grid-child">
+              <img src="https://cdn.pixabay.com/photo/2022/11/21/12/20/man-7606907_1280.jpg" width="1000" height="1000" >
+        </div>
 
-        <div class="content">
-            <h1 class="industrial-title">Willkommen!</h1>
-            <p class="industrial-text">bei Herthas_Diner</p>
+        <div name="full" class="grid-child">
+                <div name="title">
+                    <h1>Willkommen!</h1>
+                    <h2>bei Herthas-Diner</h2>
+                </div>
+                <div style=" margin: 0px ">
+                    <h2>Anmelden</h2>
+                    <div class="container">
+                        <div name="BenutzerInput" class="element1">
 
-            <div>
-                <h2>Anmelden</h2>
-                <p>Benutzername</p>
-                <input  placeholder="Benutzer ID" type="number" min="1" step="1">
-                <div>
-                    <button type="button" @click="anmelden">anmelden</button>
+                            <input v-model="BenutzerID" type="number" min="1" step="1" placeholder="BenutzerID">
+                        </div>
+
+                        <div name="BenutzerOutput" class="element2">
+                            <button @click="save"> anmelden </button>
+                        </div>
+
+                    </div>
+                    <div style="margin: 0px 0px 0px 20px">
+                        <div style="margin: 0px 0px 0px 10px; padding: 0px">
+                            <p> Biste noch net anjemeldet? Pech, dann rejistriere dich erstmal!</p>
+                        </div>
+                        <button @click="registrierung">Registrierung </button>
+                    </div>
                 </div>
-                <p></p>
-                <p></p>
-                <p>Klicke hier um einen tisch zu reservieren</p>
-                <div>
-                     <button type="button" @click="reservieren">reservieren</button>
-                </div>
-                <RouterLink to="/reservieren">reservieren</RouterLink>
-                <p>Wenn du noch nicht angemeldet bist dann registriere dich bitte hier:</p>
-                <RouterLink to="/registrieren">registrieren</RouterLink>
-            </div>
         </div>
     </div>
 </template>
@@ -31,58 +37,56 @@
 import { ref, onMounted } from 'vue';
 import {RouterLink, useRouter} from "vue-router";
 import ReservierenView from "@/views/ReservierenView.vue";
-import axios from "axios";
 
-const Benutzername = ref('');
+async function reservierung() {
+    document.location.href = "http://localhost:5173/reservieren";
+}
+async function registrierung() {
+    document.location.href = "http://localhost:5173/registrieren";
+}
+
+
+const BenutzerID = ref('');
 
 const save = async () => {
-    const endpoint = 'http://localhost:8080/kunden';
-    const data = { Benutzername };
+    const endpointUrl = 'http://localhost:8080/kunden/';
+    const endpointAttach = BenutzerID.value;
+    const endpoint = endpointUrl + endpointAttach;
 
     try {
         const response = await fetch(endpoint, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            }
         });
 
-        const result = await response.json();
+        const result = await response;
         console.log('Success:', result);
+        showPopup('Jetzt bist du angemeldet');
+        await reservierung();
 
     } catch (error) {
         console.error('Error:', error);
     }
-};
-
-function anmelden() {
-
-
-    // Die URL, zu der Sie die GET-Anfrage senden möchten
-    const baseUrls = 'http://localhost:8080/kunden';
-    const apiUrl = 'http://localhost:8080/kunden/' + Benutzername.value;
-
-    let Kunde: any; // Typ für die Antwortdaten
-
-    // Führen Sie die GET-Anfrage aus
-    axios.get(apiUrl)
-        .then((response) => {
-            // Die Antwort wurde erfolgreich erhalten
-            Kunde = response.data;
-            console.log('Response data:', response.data);
-        })
-        .catch((error) => {
-            // Ein Fehler ist aufgetreten
-            console.error('Error:', error);
-        });
-
-        window.location.href = "http://localhost:8080/reservieren";
-
 }
+function showPopup(message) {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.style.position = 'fixed';
+    popup.style.top = '10px';
+    popup.style.left = '50%';
+    popup.style.transform = 'translateX(-50%)';
+    popup.style.background = '#4CAF50';
+    popup.style.color = 'white';
+    popup.style.padding = '10px';
+    popup.style.borderRadius = '5px';
+    document.body.appendChild(popup);
 
-
-
+    setTimeout(() => {
+        document.body.removeChild(popup);
+    }, 3000);
+}
 
 // Lade Reservierungen nach dem Laden der Komponente
 onMounted(() => {
@@ -97,9 +101,11 @@ const loadReservierung = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
+            }
         });
         const result = await response.json();
+        console.log('Success:', result);
+
     } catch (error) {
         console.error('Error loading reservations:', error);
     }
@@ -107,58 +113,142 @@ const loadReservierung = async () => {
 </script>
 
 <style scoped>
-/* Allgemeiner Hintergrund und Schriftstil */
+
+.grid-parent {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    justify-content: center; /* Horizontal zentrieren */
+}
+.grid-child {
+    flex: 1;
+    padding: 20px;
+    border: none;
+}
+
+container {
+    position: relative;
+    content: "width=device-width, initial-scale=1.0";
+
+    height: 100%;
+    background-color: #f8f8f8;
+}
+
+tytle {
+    margin: 0px;
+}
+
+image {
+    position: relative;
+    margin-right: 240px;
+    left: 100px;
+    top: 0px;
+    z-index: -1;
+    width: 33.3%
+}
+
+full {
+    position: relative;
+    margin-left: 240px;
+    left: 100px;
+    top: 0px;
+    z-index: -1;
+    width: 66.6%
+}
 body {
     background-color: #f5f5dc; /* Beige */
-    color: #4d3319; /* Dunkles Braun für den Text */
+    color: #000000; /* Dunkles Braun für den Text */
     font-family: 'Georgia', serif; /* Rustikale Schriftart */
     margin: 0;
-    padding: 0;
+    padding: 20px;
 }
 
 /* Container-Styling */
-.welcome-container {
+div {
     background-color: #d2b48c; /* Hellbraun */
     padding: 20px;
     margin: 20px;
     border-radius: 10px;
 }
 
+
+
+
+.container {
+    display: flex;
+}
+
+.element1 {
+    flex: 2; /* Das erste Element nimmt 2 Teile des verfügbaren Platzes ein */
+    height: 100px;
+    margin: 0px;
+    padding: 0px
+
+}
+
+.element2 {
+    flex: 1; /* Das zweite Element nimmt 1 Teil des verfügbaren Platzes ein */
+    height: 100px;
+    margin: 0px;
+    padding: 0px
+}
+
+h1 {
+    color: #000000;
+    padding-bottom: 10px;
+    margin-left: 50px;
+}
+
 /* Überschriften */
-.content h2 {
-    color: #5e4934; /* Dunkles Braun */
+h2 {
+    color: #000000; /* Dunkles Braun */
+    margin-left: 50px;
+    padding-bottom: 10px;
+}
+
+h4 {
+    color: #000000; /* Dunkles Braun */
+    padding-bottom:  20px;
+}
+
+p {
+    color: #000000; /* Dunkles Braun */
+    margin: 0px;
+    padding-bottom: 10px;
 }
 
 /* Eingabefelder */
 input {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #d2b48c; /* Hellbraun */
+    padding: 10px 10px;
+    margin: 10px;
+    border: 1px solid #000000; /* Hellbraun */
     border-radius: 5px;
     background-color: #fff; /* Weiß */
-    color: #4d3319; /* Dunkles Braun für den Text */
+    color: #000000; /* Dunkles Braun für den Text */
 }
 
-/* Registrierungsbutton */
+/* Reservierungsbuttons */
 button {
-    padding: 10px 20px;
+    padding: 10px 10px;
+    margin: 10px;
     background-color: #8b735b; /* Dunkles Beige */
     color: #fff; /* Weiß für den Text */
     border: none;
     border-radius: 5px;
     cursor: pointer;
+
 }
 
 /* Button-Hover-Effekt */
 button:hover {
     background-color: #6a5c49; /* Dunkleres Beige beim Hover */
 }
-.industrial-title {
-    font-size: 30px;
-    margin-bottom: 20px;
+
+/* Löschen-Button-Styling */
+button.delete {
+    background-color: #ff0000; /* Rot */
 }
 
-.industrial-text {
-    font-size: 18px;
-}
+
+
+
 </style>

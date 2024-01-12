@@ -167,7 +167,7 @@ async function DeleteTischSlots() {
                         }
                 });
 
-                const result = await response.json();
+                const result = await response;
                 console.log('Success:', result);
 
         } catch (error) {
