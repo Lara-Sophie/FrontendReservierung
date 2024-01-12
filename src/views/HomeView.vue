@@ -9,10 +9,16 @@
             <div>
                 <h2>Anmelden</h2>
                 <p>Benutzername</p>
-                <input v-model="Benutzername" placeholder="Benutzername" type="text">
+                <input  placeholder="Benutzer ID" type="number" min="1" step="1">
+                <div>
+                    <button type="button" @click="anmelden">anmelden</button>
+                </div>
                 <p></p>
-                <button type="button" @click="save">anmelden</button>
+                <p></p>
                 <p>Klicke hier um einen tisch zu reservieren</p>
+                <div>
+                     <button type="button" @click="reservieren">reservieren</button>
+                </div>
                 <RouterLink to="/reservieren">reservieren</RouterLink>
                 <p>Wenn du noch nicht angemeldet bist dann registriere dich bitte hier:</p>
                 <RouterLink to="/registrieren">registrieren</RouterLink>
@@ -25,6 +31,7 @@
 import { ref, onMounted } from 'vue';
 import {RouterLink, useRouter} from "vue-router";
 import ReservierenView from "@/views/ReservierenView.vue";
+import axios from "axios";
 
 const Benutzername = ref('');
 
@@ -48,6 +55,31 @@ const save = async () => {
         console.error('Error:', error);
     }
 };
+
+function anmelden() {
+
+
+    // Die URL, zu der Sie die GET-Anfrage senden möchten
+    const baseUrls = 'http://localhost:8080/kunden';
+    const apiUrl = 'http://localhost:8080/kunden/' + Benutzername.value;
+
+    let Kunde: any; // Typ für die Antwortdaten
+
+    // Führen Sie die GET-Anfrage aus
+    axios.get(apiUrl)
+        .then((response) => {
+            // Die Antwort wurde erfolgreich erhalten
+            Kunde = response.data;
+            console.log('Response data:', response.data);
+        })
+        .catch((error) => {
+            // Ein Fehler ist aufgetreten
+            console.error('Error:', error);
+        });
+
+        window.location.href = "http://localhost:8080/reservieren";
+
+}
 
 
 
