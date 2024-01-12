@@ -19,7 +19,7 @@
                                         <div name="TischInput" class="element1">
 
                                                 <input v-model="TischNr" type="number" min="1" step="1" placeholder="TischNr">
-                                                <input type="number" min="1" step="1" placeholder="anzahl Plätze">
+                                                <input v-mdel="AnzahlPlaetze" type="number" min="1" step="1" placeholder="anzahl Plätze">
                                         </div>
 
                                         <div name="TischOutput" class="element2">
@@ -74,15 +74,15 @@ import ReservierenView from "@/views/ReservierenView.vue";
 
 
 const TischNr = ref('');
+const AnzahlPlaetze = ref('');
 async function reservierung() {
    document.location.href = "http://localhost:5173/reservieren";
 }
 
 
 async function AddTisch() {
-        const endpointUrl = 'http://localhost:8080/tische/';
-        const endpointAttach = TischNr.value;
-        const endpoint = endpointUrl + endpointAttach;
+        const endpoint = 'http://localhost:8080/tische';
+
 
 
         try {
@@ -90,7 +90,11 @@ async function AddTisch() {
                         method: 'POST',
                         headers: {
                                 'Content-Type': 'application/json',
-                        }
+                        },
+                        body: JSON.stringify({
+                                id: TischNr.value,
+                                anzahlPlaetze: AnzahlPlaetze.value,
+                        })
                 });
 
                 const result = await response.json();
@@ -122,10 +126,11 @@ async function deleteTisch() {
         }
 }
 
+const Startzeit = ref('');
+
 async function AddTischSlots() {
-        const endpointUrl = 'http://localhost:8080/tischSlot/';
-        const endpointAttach = {TischNr};
-        const endpoint = endpointUrl + endpointAttach;
+        const endpointUrl = 'http://localhost:8080/tischSlot';
+        const endpoint = endpointUrl;
 
 
         try {
@@ -133,7 +138,12 @@ async function AddTischSlots() {
                         method: 'POST',
                         headers: {
                                 'Content-Type': 'application/json',
-                        }
+                        },
+                        body: JSON.stringify({
+                                TischNr: TischNr.value,
+                                Startzeit: Startzeit.value,
+
+                        })
                 });
 
                 const result = await response.json();
@@ -165,6 +175,27 @@ async function DeleteTischSlots() {
         }
 }
 
+
+async function GetAllTischSlots() {
+    const endpointUrl = 'http://localhost:8080/tischSlot';
+    const endpointAttach = {TischNr};
+    const endpoint = endpointUrl + endpointAttach;
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const result = await response.json();
+        console.log('Success:', result);
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 
 </script>
