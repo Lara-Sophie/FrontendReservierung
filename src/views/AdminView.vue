@@ -20,7 +20,7 @@
                                                 <input v-mdel="AnzahlPlaetze" type="number" min="1" step="1" placeholder="anzahl Plätze">
                                             </div>
                                             <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
-                                                <button @click="AddTisch"> AddTisch </button>
+                                                <button @click="AddTisch"> Tisch hinzufügen </button>
                                             </div>
                                         </div>
 
@@ -31,7 +31,7 @@
                                                 <input v-model="TischNr" type="number" min="1" step="1" placeholder="TischNr">
                                             </div>
                                             <div name="delete_Tisch" class="element2" style=" marging: 0px; padding: 0px">
-                                                <button type=button @click="deleteTisch"> DeleteTisch </button>
+                                                <button type=button @click="deleteTisch"> Tisch entfernen </button>
                                             </div>
                                         </div>
                                 </div>
@@ -42,11 +42,12 @@
 
                                     <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
                                         <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
-                                            <input type="date" min="2024-02-01" placeholder="Date">
-                                            <input type="time" min="18:00" step="7200" max="18:00" placeholder="time">
+                                            <input v-model="startDate" type="date" min="2024-02-01" placeholder="Date">
+                                            <input v-model="startTime" type="time" min="18:00" step="7200" max="18:00" placeholder="time">
                                         </div>
                                         <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
-                                            <button @click="AddTisch"> AddTisch </button>
+                                            <button type=botton @click="AddTischSlots"> TischSlot hinzufügen </button>
+                                            <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="TischNr">
                                         </div>
                                     </div>
 
@@ -57,7 +58,7 @@
                                             <input type="number" min="1" step="1" placeholder="Tischslot Nr">
                                         </div>
                                         <div name="delete_Tisch" class="element2" style=" marging: 0px; padding: 0px">
-                                            <button @click="DeleteTischSlots"> Delete Tischslot </button>
+                                            <button @click="DeleteTischSlots"> Tischslot löschen </button>
                                         </div>
                                     </div>
                                 </div>
@@ -132,8 +133,9 @@ async function deleteTisch() {
         }
 }
 
-const TischSlotNr = ref('');
-const Startzeit = ref('');
+const startDate = ref('');
+const startTime = ref('');
+const TischNrTS = ref('');
 
 async function AddTischSlots() {
         const endpoint = 'http://localhost:8080/tischSlot';
@@ -145,9 +147,9 @@ async function AddTischSlots() {
                                 'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                                TischNr: 1,
-                                Startzeit: Startzeit.value,
-
+                                tischId: TischNrTS.value,
+                                startzeit: startTime.value,
+                                startDate: startDate.value
                         })
                 });
 
