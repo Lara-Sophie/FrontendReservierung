@@ -15,15 +15,15 @@
         <div style=" margin: 0px ">
             <div class="container">
                 <div name="BenutzerInput" class="element1">
-                    <input  type="number" min="1" step="1" placeholder="BenutzerID">
+                    <input  v-model="BenutzerID" type="number" min="1" step="1" placeholder="BenutzerID">
                     <p></p>
-                    <input type="String" min="1" step="1" placeholder="Name">
+                    <input v-model="Name"  min="1" step="1" placeholder="Name">
                     <p></p>
-                    <input  type="number" min="1" step="1" placeholder="Telefonnummer">
+                    <input  v-model="Telefonnummer" type="number" min="1" step="1" placeholder="Telefonnummer">
                     <p></p>
-                    <input type="String" min="1" step="1" placeholder="Allergien">
+                    <input v-model="Allergien"  min="1" step="1" placeholder="Allergien">
                     <p></p>
-                    <input type="String" min="1" step="1" placeholder="Mail">
+                    <input v-model="Mail"  min="1" step="1" placeholder="Mail">
                     <button @click="save"> registrieren </button>
                     <div style="margin: 0px 0px 0px -20px">
                         <button @click="reservierung">Reservierung </button>
@@ -53,16 +53,22 @@ const Telefonnummer = ref('');
 const Mail = ref('');
 
 const save = async () => {
-    const endpointUrl = 'http://localhost:8080/kunden/';
-    const endpointAttach = BenutzerID.value + Name.value + Allergien.value + Telefonnummer.value + Mail.value;
-    const endpoint = endpointUrl + endpointAttach;
+    const endpointUrl = 'http://localhost:8080/kunden';
+
 
     try {
-        const response = await fetch(endpoint, {
+        const response = await fetch(endpointUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body:JSON.stringify({
+                id:BenutzerID.value,
+                name:Name.value,
+                allergien:Allergien.value,
+                telefonnummer:Telefonnummer.value,
+                email:Mail.value
+            })
         });
 
         const result = await response;

@@ -80,7 +80,7 @@ async function reservierung() {
 
 
 async function AddTisch() {
-        const endpointUrl = 'http://localhost:8080/tische/';
+        const endpointUrl = 'http://localhost:8080/tische';
         const endpointAttach = TischNr.value;
         const endpoint = endpointUrl + endpointAttach;
 
@@ -95,6 +95,7 @@ async function AddTisch() {
 
                 const result = await response.json();
                 console.log('Success:', result);
+                showPopup("Tisch hinzugefügt")
 
         } catch (error) {
                 console.error('Error:', error);
@@ -116,6 +117,7 @@ async function deleteTisch() {
 
                 const result = await response;
                 console.log('Success:', result);
+                showPopup("Tisch gelöscht")
 
         } catch (error) {
                 console.error('Error:', error);
@@ -123,7 +125,7 @@ async function deleteTisch() {
 }
 
 async function AddTischSlots() {
-        const endpointUrl = 'http://localhost:8080/tischSlot/';
+        const endpointUrl = 'http://localhost:8080/tischSlot';
         const endpointAttach = {TischNr};
         const endpoint = endpointUrl + endpointAttach;
 
@@ -138,6 +140,7 @@ async function AddTischSlots() {
 
                 const result = await response.json();
                 console.log('Success:', result);
+                showPopup("Tischslot hinzugefügt")
 
         } catch (error) {
                 console.error('Error:', error);
@@ -159,10 +162,29 @@ async function DeleteTischSlots() {
 
                 const result = await response;
                 console.log('Success:', result);
+                showPopup("Tischslot gelöscht")
 
         } catch (error) {
                 console.error('Error:', error);
         }
+}
+
+function showPopup(message) {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.style.position = 'fixed';
+    popup.style.top = '10px';
+    popup.style.left = '50%';
+    popup.style.transform = 'translateX(-50%)';
+    popup.style.background = '#4CAF50';
+    popup.style.color = 'white';
+    popup.style.padding = '10px';
+    popup.style.borderRadius = '5px';
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        document.body.removeChild(popup);
+    }, 3000);
 }
 
 
