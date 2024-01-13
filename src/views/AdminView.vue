@@ -15,45 +15,54 @@
                                 <div style=" margin: 0px ">
                                         <h2>Tische</h2>
 
-                                        <div class="container">
-                                        <div name="TischInput" class="element1">
-
-                                                <input v-model="TischNr" type="number" min="1" step="1" placeholder="TischNr">
-                                                <input type="number" min="1" step="1" placeholder="anzahl Plätze">
-                                        </div>
-
-                                        <div name="TischOutput" class="element2">
+                                        <div class="container" style=" margin: 0px; padding: 0px">
+                                            <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+                                                <input v-mdel="AnzahlPlaetze" type="number" min="1" step="1" placeholder="anzahl Plätze">
+                                            </div>
+                                            <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
                                                 <button @click="AddTisch"> AddTisch </button>
-                                                <button @click="deleteTisch"> DeleteTisch </button>
+                                            </div>
                                         </div>
 
-                                        </div>
+                                        <hr style=" color: black">
 
+                                        <div class="container" style=" margin: 0px; padding: 0px">
+                                            <div name="serch_nr" class="element1" style=" marging: 0px; padding: 0px">
+                                                <input v-model="TischNr" type="number" min="1" step="1" placeholder="TischNr">
+                                            </div>
+                                            <div name="delete_Tisch" class="element2" style=" marging: 0px; padding: 0px">
+                                                <button type=button @click="deleteTisch"> DeleteTisch </button>
+                                            </div>
+                                        </div>
+                                </div>
+
+
+                                <div style=" margin: 0px ">
+                                    <h2>Tischslots</h2>
+
+                                    <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
+                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+                                            <input type="date" min="2024-02-01" placeholder="Date">
+                                            <input type="time" min="18:00" step="7200" max="18:00" placeholder="time">
+                                        </div>
+                                        <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
+                                            <button @click="AddTisch"> AddTisch </button>
+                                        </div>
+                                    </div>
+
+                                    <hr style=" color: black">
+
+                                    <div class="container" style=" margin: 0px; padding: 0px">
+                                        <div name="serch_nr" class="element1" style=" marging: 0px; padding: 0px">
+                                            <input type="number" min="1" step="1" placeholder="Tischslot Nr">
+                                        </div>
+                                        <div name="delete_Tisch" class="element2" style=" marging: 0px; padding: 0px">
+                                            <button @click="DeleteTischSlots"> Delete Tischslot </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 &nbsp;
-                                <div style=" margin: 0px ">
-                                        <h2>Tischslots</h2>
 
-                                        <div name="TischNummer" style=" margin: 0px 0px 0px 22px" >
-                                                <input type="number" min="1" step="1" placeholder="Tischslot Nr">
-                                        </div>
-
-                                        <div name="StartzeitDiv" style=" margin: 0px 0px 0px 22px">
-                                            <div style="margin: 0px 0px 0px 10px; padding: 0px">
-                                                <h4> Startzeit</h4>
-                                            </div>
-                                                <input type="date" min="2024-02-01">
-
-                                                <input type="time" min="18:00" step="7200" max="18:00">
-
-                                        </div>
-
-
-                                        <div style="margin: 0px 0px 0px 22px ">
-                                        <button @click="AddTischSlots"> Add Tischslot </button>
-                                        <button @click="DeleteTischSlots"> Delete Tischslot </button>
-                                        </div>
-                                </div>
 
                                 <div style="margin: 0px 0px 0px 40px">
                                         <button @click="reservierung">Reservierung </button>
@@ -74,15 +83,10 @@ import ReservierenView from "@/views/ReservierenView.vue";
 
 
 const TischNr = ref('');
-async function reservierung() {
-   document.location.href = "http://localhost:5173/reservieren";
-}
-
+const AnzahlPlaetze = ref('');
 
 async function AddTisch() {
-        const endpointUrl = 'http://localhost:8080/tische';
-        const endpointAttach = TischNr.value;
-        const endpoint = endpointUrl + endpointAttach;
+        const endpoint = 'http://localhost:8080/tische';
 
 
         try {
@@ -90,7 +94,11 @@ async function AddTisch() {
                         method: 'POST',
                         headers: {
                                 'Content-Type': 'application/json',
-                        }
+                        },
+                        body: JSON.stringify({
+                                id: 1,
+                                anzahlPlaetze: AnzahlPlaetze.value
+                        })
                 });
 
                 const result = await response.json();
@@ -124,18 +132,23 @@ async function deleteTisch() {
         }
 }
 
-async function AddTischSlots() {
-        const endpointUrl = 'http://localhost:8080/tischSlot';
-        const endpointAttach = {TischNr};
-        const endpoint = endpointUrl + endpointAttach;
+const TischSlotNr = ref('');
+const Startzeit = ref('');
 
+async function AddTischSlots() {
+        const endpoint = 'http://localhost:8080/tischSlot';
 
         try {
                 const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: {
                                 'Content-Type': 'application/json',
-                        }
+                        },
+                        body: JSON.stringify({
+                                TischNr: 1,
+                                Startzeit: Startzeit.value,
+
+                        })
                 });
 
                 const result = await response.json();
@@ -169,6 +182,7 @@ async function DeleteTischSlots() {
         }
 }
 
+
 function showPopup(message) {
     const popup = document.createElement('div');
     popup.textContent = message;
@@ -185,6 +199,29 @@ function showPopup(message) {
     setTimeout(() => {
         document.body.removeChild(popup);
     }, 3000);
+}
+async function reservierung() {
+    document.location.href = "http://localhost:5173/reservieren";
+}
+async function GetAllTischSlots() {
+    const endpointUrl = 'http://localhost:8080/tischSlot';
+    const endpointAttach = {TischNr};
+    const endpoint = endpointUrl + endpointAttach;
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const result = await response.json();
+        console.log('Success:', result);
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
 
