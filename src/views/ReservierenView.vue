@@ -4,114 +4,45 @@
             <div>
                 <img src="https://cdn.pixabay.com/photo/2022/11/21/12/20/man-7606907_1280.jpg" width="1000" height="1000">
             </div>
-
-
-            <div name="table">
-
-                <table>
-                    <tr>
-                        <th class="day">DAY</th>
-                        <th class="day">MON</th>
-                        <th class="day">TUE</th>
-                        <th class="day">WED</th>
-                        <th class="day">THU</th>
-                        <th class="day">FRI</th>
-                        <th class="day">SAT</th>
-                        <th class="day">SUN</th>
-                    </tr>
-                    <tr>
-                        <th class="date">DATE</th>
-                        <th class="date">22</th>
-                        <th class="date">23</th>
-                        <th class="date">24</th>
-                        <th class="date">25</th>
-                        <th class="date">26</th>
-                        <th class="date">27</th>
-                        <th class="date">28</th>
-                    </tr>
-                    <div>
-                        <tr>
-                            <td>Tisch 1 für 4 Personen</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                        </tr>
-                    </div>
-                    <tr>
-                        <div>
-                            <td>Tisch 1 für 4 Personen</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                        </div>
-                    </tr>
-                    <tr>
-                        <td>Tisch 2 für 5 Personen</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                    </tr>
-                    <tr>
-                        <td>Tisch 2 für 5 Personen</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                    </tr>
-                    <tr>
-                        <div>
-                            <td>Tisch 3 für 6 Personen</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                        </div>
-                    </tr>
-                    <tr>
-                        <div>
-                            <td>Tisch 3 für 6 Personen</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                        </div>
-                    </tr>
-                </table>
-            </div>
         </div>
 
         <div name="full" class="grid-child">
-             <div>
-                <h2>Reservierung Hethas-Diner </h2>
-                <p>Wähle dir einen Slot aus und drücke den button reservieren.</p>
-                <p>Zum Stornieren, suche deinen reservierten slot und drücke den button stornieren. </p>
+            <div name=" title">
+                <h1>Reservierung</h1>
+                <h2>Herthas-Diner</h2>
+            </div >
+            <div style=" margin: 0px ">
+                <div name="table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Tisch</th>
+                            <th>Wochentag</th>
+                            <th>Datum</th>
+                            <th>Von</th>
+                            <th>Bis</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                <div>
-                    <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
-                    <button type="button" @click="stornieren">Stornieren</button>
-                    <p>Hier kannst du dein Profil Löschen</p>
-                    <button type="button" @click="deleteUser">Löschen</button>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="container" style=" margin: 0px; padding: 0px">
+                    <div class="element2"  style=" marging: 0px; padding: 0px">
+                        <button type="button" @click="loadReservations" data-tisch-id="1" data-slot="true">Reservieren</button>
+                    </div>
+                </div>
+                <div class="container" style=" margin: 0px; padding: 0px">
+                        <div name="BenutzerInput" class="element1">
+                            <div style="margin: 0px 0px 0px 10px; padding: 0px">
+                                <p>Ach willste uns verlassen?!</p>
+                            </div>
+                            <input v-model="BenutzerID" type="number" min="1" step="1" placeholder="BenutzerID">
+                            <button type="button" @click="deleteUser">Löschen</button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -119,62 +50,77 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import {ref, reactive, computed} from "vue";
+const BenutzerID = ref('');
+async function registrierung() {
+    document.location.href = "http://localhost:5173/registrieren";
+}
 
 
-
-const Benutzername = ref('');
-const reservierteSlots: { tischId: number; slot: boolean }[] = reactive([]);
-
-const handleReservieren = (event: MouseEvent) => {
-    // Extrahiere die Daten aus den data-* Attributen des Elements
-    const tischId = (event.target as HTMLElement).dataset.tischId;
-    const slot = (event.target as HTMLElement).dataset.slot;
-
-    // Überprüfe, ob die Werte vorhanden sind, und konvertiere sie nach Bedarf
-    if (tischId && slot) {
-        reservieren(Number(tischId), slot === "true");
+const loadReservations = async (reservations) => {
+    try {
+        const response = await fetch('http://localhost:5173/tischSlots', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const result = await response.json();
+        console.log('Success:', result);
+        reservations.value = result;
+    } catch (error) {
+        console.error('Error:', error);
     }
 };
 
-const reservieren = (tischId:number, slot:boolean) => {
-    // Überprüfen, ob der Slot bereits reserviert ist
-    if (!reservierteSlots.some(r => r.tischId === tischId && r.slot === slot)) {
-        reservierteSlots.push({ tischId, slot });
-        console.log('Slot reserviert:', { tischId, slot });
-    } else {
-        console.log('Slot bereits reserviert');
-    }
-};
 
-const stornieren = () => {
-    const selectedReservierung = window.prompt('Geben Sie die Nummer der Reservierung ein:');
-    if (selectedReservierung !== null) {
-        reservierteSlots.splice(Number(selectedReservierung), 1);
-        console.log('Reservierung storniert:', selectedReservierung);
-    }
-};
+
+
+
+
+
 
 const deleteUser = async () => {
-    const endpoint = 'http://localhost:8080/kunden';
-
+    const endpointUrl = 'http://localhost:8080/kunden/';
+    const endpointAttach = BenutzerID.value;
+    const endpoint = endpointUrl + endpointAttach;
     try {
         const response = await fetch(endpoint, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({Benutzername: Benutzername.value}),
         });
 
         const result = await response.json();
         console.log('Success:', result);
+        showPopup("Profil gelöscht");
+        await registrierung();
 
-        // Führe weitere Aktionen nach dem Löschen durch, wenn nötig
+
     } catch (error) {
         console.error('Error:', error);
     }
 };
+
+function showPopup(message:string) {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.style.position = 'fixed';
+    popup.style.top = '10px';
+    popup.style.left = '50%';
+    popup.style.transform = 'translateX(-50%)';
+    popup.style.background = '#4CAF50';
+    popup.style.color = 'white';
+    popup.style.padding = '10px';
+    popup.style.borderRadius = '5px';
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        document.body.removeChild(popup);
+    }, 3000);
+}
+
 </script>
 
 

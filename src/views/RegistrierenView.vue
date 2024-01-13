@@ -25,9 +25,6 @@
                     <p></p>
                     <input v-model="Mail"  min="1" step="1" placeholder="Mail">
                     <button @click="save"> registrieren </button>
-                    <div style="margin: 0px 0px 0px -20px">
-                        <button @click="reservierung">Reservierung </button>
-                    </div>
                 </div>
             </div>
 
@@ -80,7 +77,7 @@ const save = async () => {
         console.error('Error:', error);
     }
 }
-function showPopup(message) {
+function showPopup(message:string) {
     const popup = document.createElement('div');
     popup.textContent = message;
     popup.style.position = 'fixed';
