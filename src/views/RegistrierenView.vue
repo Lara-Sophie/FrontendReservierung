@@ -9,7 +9,7 @@
         <div name=" title">
             <h1>Registrieren</h1>
             <div style="margin: 0px 0px 0px 10px">
-                <p>Du faule Liesel haste es ouch endlich zu uns jeschafft??</p>
+                <h6>Wenn du und deene Mischpoke bei uns reservieren wollt, dann müssta erst n Benutzerkonto anlejen, jerafft? </h6>
             </div>
         </div >
         <div style=" margin: 0px ">
@@ -21,9 +21,9 @@
                     <p></p>
                     <input  v-model="Telefonnummer" type="number" min="1" step="1" placeholder="Telefonnummer">
                     <p></p>
-                    <input v-model="Allergien"  min="1" step="1" placeholder="Allergien">
-                    <p></p>
                     <input v-model="Mail"  min="1" step="1" placeholder="Mail">
+                    <p></p>
+                    <input v-model="Allergien"  min="1" step="1" placeholder="Hinweis zu Allergien">
                     <button @click="save"> registrieren </button>
                 </div>
             </div>

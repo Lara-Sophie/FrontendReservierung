@@ -8,16 +8,20 @@
 
 
 
-            <div id="meinContainerId"></div>
+
+                    <div id="meinContainerId"></div>
+
+
 
 
 
             <div class="container" style=" margin: 0px; padding: 0px">
                 <div name="BenutzerInput" class="element1">
                     <div style="margin: 0px 0px 0px 10px; padding: 0px">
-                        <h5>Wat willste uns endlich  verlassen?!</h5>
+                        <h5>Na, willste uns endlich  verlassen?</h5>
                     </div>
                     <input v-model="BenutzerID" type="number" min="1" step="1" placeholder="BenutzerID">
+
                     <button type="button" @click="deleteUser">Löschen</button>
                 </div>
             </div>
@@ -30,25 +34,33 @@
 
               <div name="full" class="grid-child" style=" margin: 0px; patting: 0px">
                    <div style="margin: 0px">
-                      <h2>Reservierung Herthas-Eckkneipe </h2>
-                      <h5> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                          Lorem ipsum dolor sit amet,
-                          consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.</h5>
+                      <h2>Reservierung Herthas-Bar </h2>
+                      <h5> Willkommen in Herthas Bar,
+                          wo wir die besten Drinks mit Herz & Berliner Schnauze servieren.<br>
+                          In unserem Wohnzimmerambiente sind Liebhaber*innen aller Spirituosen und Mixgetränke Zuhause. <br>
+                          <br>
+                          Unsere Inhaberin Hertha ist seit Anbeginn die gute Seele dieses Ladens. <br>
+                          Ihre Berliner Herzlichkeit sorgt für gute Laune und den nötigen Respekt - getreu dem Motto: harte Schale, weicher Kern. <br> Chef-Mixologe ist ihr langjähriger Geschäftspartner, Joachim. <br> Gemeinsam starteten sie mit einer kleinen Kneipe an der Ecke, wo die Menschen zum Feierabendbierchen einkehrten.
+                          Viele gemixte Drinks und einige Weiterbildungen später, entstand aus der netten Eckkneipe diese fantastische Bar. Neben Feierabendbierchen gibt es hier nun allerhand köstliche Spirituosen und auch nicht-alkoholische Getränke. <br>
+                          <br>
+                          Heute gehört Herthas Bar zu einem DER Szenelokale des Berliner Nachtlebens. <br>
+                          Wer uns einmal live und in Farbe erleben möchte, kann täglich von 18:00 bis 22:00 Uhr reinschneien. Unser empfohlener Welcome-Drink: Herthas Heißer Holunderlikör.<br>
+                          <br>
+                          Wir freuen uns auf euren Besuch,<br>
+                          hier in Herthas Bar!
+                          </h5>
 
                   </div>
 
                   <div>
                   </div>
                   <div style=" margin: 0px ">
-                      <h2>Tische</h2>
+                      <h2>Reservierungen</h2>
 
-                      <div class="container" style=" margin: 0px; padding: 0px">
+                      <div class="container" style=" margin: 0px; padding: 0px; height: 120px">
                           <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
-                              <input v-model="tischslotId" type="number" min="1" step="1" placeholder="anzahl Plätze">
-                              <input v-model="kundenId" type="number" min="1" step="1" placeholder="anzahl Plätze">
+                              <input v-model="tischslotId" type="number" min="1" step="1" placeholder="TischSlotID">
+                              <input v-model="kundenId" type="number" min="1" step="1" placeholder="KundenId">
                           </div>
                           <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
                               <button type="button" data-tisch-id="1" @click="AddReservierung">Reservieren</button>
@@ -59,7 +71,7 @@
 
                       <div class="container" style=" margin: 0px; padding: 0px">
                           <div name="serch_nr" class="element1" style=" marging: 0px; padding: 0px">
-                              <input v-model="reservierungId" type="number" min="1" step="1" placeholder="TischNr">
+                              <input v-model="reservierungId" type="number" min="1" step="1" placeholder="deine Reservierungs Nr.">
                           </div>
                           <div name="delete_Reservierung" class="element2" style=" marging: 0px; padding: 0px">
                               <button type="button" data-tisch-id="1" @click="deleteReservierung">Stornieren</button>
@@ -78,6 +90,9 @@
 <script setup lang="ts">
 import {ref, reactive, computed} from "vue";
 const BenutzerID = ref('');
+
+const kundenId = ref('');
+
 async function registrierung() {
     document.location.href = "http://localhost:5173/registrieren";
 }
@@ -209,7 +224,7 @@ window.onload = function () {
     }
 }
 
-const kundenId = ref('');
+
 const tischslotId = ref('');
 
 async function AddReservierung() {
@@ -225,8 +240,8 @@ async function AddReservierung() {
             },
             body: JSON.stringify({
 
-                kundenId: kundenId.value,
-                tischslotId: tischslotId.value
+                kundenId: BenutzerID.value,
+                tischSlotId: tischslotId.value
             })
         });
 

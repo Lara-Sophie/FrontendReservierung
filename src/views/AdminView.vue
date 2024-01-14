@@ -40,16 +40,16 @@
                                 <div style=" margin: 0px ">
                                     <h2>Tischslots</h2>
 
-                                    <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
-<!--                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+<!--                                    <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
+                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
                                             <input v-model="startDate" type="date" min="2024-02-01" placeholder="Date">
                                             <input v-model="startTime" type="time" min="18:00" step="7200" max="18:00" placeholder="time">
                                         </div>
                                         <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
                                             <button type=botton @click="AddTischSlots"> TischSlot hinzufügen </button>
                                             <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="TischNr">
-                                        </div>-->
-                                    </div>
+                                        </div>
+                                    </div>-->
 
                                     <hr style=" color: black">
 
