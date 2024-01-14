@@ -41,14 +41,13 @@
                                     <h2>Tischslots</h2>
 
                                     <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
-<!--                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
-                                            <input v-model="startDate" type="date" min="2024-02-01" placeholder="Date">
-                                            <input v-model="startTime" type="time" min="18:00" step="7200" max="18:00" placeholder="time">
+                                      <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+                                            <input v-model="Startzeit" type="datetime-local" min="2024-02-01" placeholder="Startzeit">
                                         </div>
                                         <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
-                                            <button type=botton @click="AddTischSlots"> TischSlot hinzufügen </button>
+                                            <button type="button" @click="AddTischSlots"> TischSlot hinzufügen </button>
                                             <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="TischNr">
-                                        </div>-->
+                                        </div>
                                     </div>
 
                                     <hr style=" color: black">
@@ -78,7 +77,7 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {Ref, ref, UnwrapRef} from 'vue';
 import {RouterLink, useRouter} from "vue-router";
 import ReservierenView from "@/views/ReservierenView.vue";
 
@@ -134,26 +133,36 @@ async function deleteTisch() {
         }
 }
 
-const startDate = ref('');
-const startTime = ref('');
+
+const Startzeit = ref('');
 const TischNrTS = ref('');
 
-async function AddTischSlots() {
-        const endpoint = 'http://localhost:8080/tischSlot';
 
+/**function convertLocalDateTimeToString(Startzeit: Ref<UnwrapRef<string>>): string  {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    const formattedString = new Date(Startzeit.value).toLocaleString('en-US', options);
+    console.log(formattedString);
+    return formattedString;
+    const time = convertLocalDateTimeToString(Startzeit);
+}*/
+
+
+async function AddTischSlots() {
+        const endpoint = 'http://localhost:8080/slots';
         try {
-                const response = await fetch(endpoint, {
+
+            const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: {
                                 'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                                tischId: TischNrTS.value,
-                                startzeit: startTime.value,
-                                startDate: startDate.value
+                            tischId: TischNrTS.value,
+                            Startzeit: Startzeit.value
                         })
                 });
-
+            console.log('TischNrTS:', TischNrTS);
+            console.log('Startzeit:', Startzeit);
                 const result = await response.json();
                 console.log('Success:', result);
                 showPopup("Tischslot hinzugefügt")
@@ -164,7 +173,7 @@ async function AddTischSlots() {
 }
 
 async function DeleteTischSlots() {
-        const endpointUrl = 'http://localhost:8080/tischSlot/';
+        const endpointUrl = 'http://localhost:8080/slots/';
         const endpointAttach = {TischNr};
         const endpoint = endpointUrl + endpointAttach;
 
