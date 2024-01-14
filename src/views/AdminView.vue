@@ -40,21 +40,32 @@
                                 <div style=" margin: 0px ">
                                     <h2>Tischslots</h2>
 
+<<<<<<< HEAD
                                     <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
                                       <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
                                             <input v-model="Startzeit" type="datetime-local" min="2024-02-01" placeholder="Startzeit">
+=======
+<!--                                    <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
+                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+                                            <input v-model="startDate" type="date" min="2024-02-01" placeholder="Date">
+                                            <input v-model="startTime" type="time" min="18:00" step="7200" max="18:00" placeholder="time">
+>>>>>>> cb57084c3d7903fe69557a4f29c318fbc414a039
                                         </div>
                                         <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
                                             <button type="button" @click="AddTischSlots"> TischSlot hinzufügen </button>
                                             <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="TischNr">
                                         </div>
+<<<<<<< HEAD
                                     </div>
+=======
+                                    </div>-->
+>>>>>>> cb57084c3d7903fe69557a4f29c318fbc414a039
 
                                     <hr style=" color: black">
 
                                     <div class="container" style=" margin: 0px; padding: 0px">
                                         <div name="serch_nr" class="element1" style=" marging: 0px; padding: 0px">
-                                            <input type="number" min="1" step="1" placeholder="Tischslot Nr">
+                                            <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="Tischslot Nr">
                                         </div>
                                         <div name="delete_Tisch" class="element2" style=" marging: 0px; padding: 0px">
                                             <button @click="DeleteTischSlots"> Tischslot löschen </button>
@@ -133,10 +144,19 @@ async function deleteTisch() {
         }
 }
 
+<<<<<<< HEAD
 
 const Startzeit = ref('');
 const TischNrTS = ref('');
 
+=======
+const startDate = ref('');
+const startTime = ref('');
+
+
+async function AddTischSlots() {
+        const endpoint = 'http://localhost:8080/slots';
+>>>>>>> cb57084c3d7903fe69557a4f29c318fbc414a039
 
 /**function convertLocalDateTimeToString(Startzeit: Ref<UnwrapRef<string>>): string  {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
@@ -171,10 +191,15 @@ async function AddTischSlots() {
                 console.error('Error:', error);
         }
 }
-
+const TischNrTS = ref('');
 async function DeleteTischSlots() {
         const endpointUrl = 'http://localhost:8080/slots/';
+<<<<<<< HEAD
         const endpointAttach = {TischNr};
+=======
+        const endpointAttach = TischNrTS.value;
+        console.log(endpointAttach);
+>>>>>>> cb57084c3d7903fe69557a4f29c318fbc414a039
         const endpoint = endpointUrl + endpointAttach;
 
         try {

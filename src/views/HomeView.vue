@@ -7,7 +7,7 @@
         <div name="full" class="grid-child">
                 <div name="title">
                     <h1>Willkommen!</h1>
-                    <h2>bei Herthas-Diner</h2>
+                    <h2>bei Herthas-Bar</h2>
                 </div>
                 <div style=" margin: 0px ">
                     <h2>Anmelden</h2>
@@ -24,7 +24,7 @@
                     </div>
                     <div style="margin: 0px 0px 0px 20px">
                         <div style="margin: 0px 0px 0px 10px; padding: 0px">
-                            <p> Biste noch net anjemeldet? Pech, dann rejistriere dich erstmal!</p>
+                            <h5> He, du bist ja noch nich anjemeldet!<br> Hier jeht's zur Registrierung.</h5>
                         </div>
                         <button @click="registrierung">Registrierung </button>
                     </div>
