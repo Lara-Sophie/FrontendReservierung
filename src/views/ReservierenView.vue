@@ -60,7 +60,7 @@
                       <div class="container" style=" margin: 0px; padding: 0px; height: 120px">
                           <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
                               <input v-model="tischslotId" type="number" min="1" step="1" placeholder="TischSlotID">
-                              <input v-model="kundenId" type="number" min="1" step="1" placeholder="KundenId">
+                              <input v-model="BenutzerID" type="number" min="1" step="1" placeholder="BenutzerId">
                           </div>
                           <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
                               <button type="button" data-tisch-id="1" @click="AddReservierung">Reservieren</button>
@@ -91,7 +91,7 @@
 import {ref, reactive, computed} from "vue";
 const BenutzerID = ref('');
 
-const kundenId = ref('');
+
 
 async function registrierung() {
     document.location.href = "http://localhost:5173/registrieren";
