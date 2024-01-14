@@ -17,10 +17,10 @@
 
                                         <div class="container" style=" margin: 0px; padding: 0px">
                                             <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
-                                                <input v-mdel="AnzahlPlaetze" type="number" min="1" step="1" placeholder="anzahl Plätze">
+                                                <input v-model="AnzahlPlaetze_" type="number" min="1" step="1" placeholder="anzahl Plätze">
                                             </div>
                                             <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
-                                                <button @click="AddTisch"> Tisch hinzufügen </button>
+                                                <button type="button" @click="AddTisch"> Tisch hinzufügen </button>
                                             </div>
                                         </div>
 
@@ -41,14 +41,14 @@
                                     <h2>Tischslots</h2>
 
                                     <div class="container" style=" height: 130px; margin: 10px; padding: 0px">
-                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+<!--                                        <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
                                             <input v-model="startDate" type="date" min="2024-02-01" placeholder="Date">
                                             <input v-model="startTime" type="time" min="18:00" step="7200" max="18:00" placeholder="time">
                                         </div>
                                         <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
                                             <button type=botton @click="AddTischSlots"> TischSlot hinzufügen </button>
                                             <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="TischNr">
-                                        </div>
+                                        </div>-->
                                     </div>
 
                                     <hr style=" color: black">
@@ -84,10 +84,11 @@ import ReservierenView from "@/views/ReservierenView.vue";
 
 
 const TischNr = ref('');
-const AnzahlPlaetze = ref('');
-
+const AnzahlPlaetze_ = ref('');
+const id = ref(2);
 async function AddTisch() {
         const endpoint = 'http://localhost:8080/tische';
+
 
 
         try {
@@ -97,8 +98,8 @@ async function AddTisch() {
                                 'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                                id: 1,
-                                anzahlPlaetze: AnzahlPlaetze.value
+
+                                anzahlPlaetze: AnzahlPlaetze_.value
                         })
                 });
 
@@ -124,7 +125,7 @@ async function deleteTisch() {
                         }
                 });
 
-                const result = await response;
+                const result = await response.json();
                 console.log('Success:', result);
                 showPopup("Tisch gelöscht")
 

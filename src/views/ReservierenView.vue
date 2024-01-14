@@ -1,6 +1,6 @@
 <template>
     <div name="container" class="grid-parent">
-        <div name="image" class="grid-child" >
+        <div name="image" class="grid-child" style="margin: 0px; padding: 0px">
             <div>
                 <img src="https://cdn.pixabay.com/photo/2022/11/21/12/20/man-7606907_1280.jpg" width="1000" height="1000">
             </div>
@@ -8,111 +8,47 @@
 
             <div name="table">
 
-                <table>
-                    <tr>
-                        <th class="day">DAY</th>
-                        <th class="day">MON</th>
-                        <th class="day">TUE</th>
-                        <th class="day">WED</th>
-                        <th class="day">THU</th>
-                        <th class="day">FRI</th>
-                        <th class="day">SAT</th>
-                        <th class="day">SUN</th>
-                    </tr>
-                    <tr>
-                        <th class="date">DATE</th>
-                        <th class="date">22</th>
-                        <th class="date">23</th>
-                        <th class="date">24</th>
-                        <th class="date">25</th>
-                        <th class="date">26</th>
-                        <th class="date">27</th>
-                        <th class="date">28</th>
-                    </tr>
-                    <div>
-                        <tr>
-                            <td>Tisch 1 für 4 Personen</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                        </tr>
-                    </div>
-                    <tr>
-                        <div>
-                            <td>Tisch 1 für 4 Personen</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                        </div>
-                    </tr>
-                    <tr>
-                        <td>Tisch 2 für 5 Personen</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                        <td> 18-20</td>
-                    </tr>
-                    <tr>
-                        <td>Tisch 2 für 5 Personen</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                        <td> 20-22</td>
-                    </tr>
-                    <tr>
-                        <div>
-                            <td>Tisch 3 für 6 Personen</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                            <td> 18-20</td>
-                        </div>
-                    </tr>
-                    <tr>
-                        <div>
-                            <td>Tisch 3 für 6 Personen</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                            <td> 20-22</td>
-                        </div>
-                    </tr>
-                </table>
+                <p >  </p>
+
+
+<!--                <table>
+                                                  <th> ID. </th> <th>Wochentag</th> <th> Datum </th> <th>Uhrzeit </th>  <th> Sitzpätze</th> <th> Bestellen </th> <th> abbestellen </th>
+                <tr v-for="slot in slots">  {{  <td> slot   </td> }} </tr>
+
+
+
+                </table>-->
             </div>
+
+
+
         </div>
 
-        <div name="full" class="grid-child">
-             <div>
-                <h2>Reservierung Hethas-Diner </h2>
-                <p>Wähle dir einen Slot aus und drücke den button reservieren.</p>
-                <p>Zum Stornieren, suche deinen reservierten slot und drücke den button stornieren. </p>
 
-                <div>
-                    <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
-                    <button type="button" @click="stornieren">Stornieren</button>
-                    <p>Hier kannst du dein Profil Löschen</p>
-                    <button type="button" @click="deleteUser">Löschen</button>
+
+        <div name="full" class="grid-child" style=" margin: 0px; patting: 0px">
+             <div style="margin: 0px">
+                <h2>Reservierung Herthas-Eckkneipe </h2>
+                <h5> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                    At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+                    consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                    At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</h5>
+
+            </div>
+            <div>
+
+            </div>
+
+            <div style="margin: 0px">
+                <div style="margin: 0px">
+                        <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
+                        <button type="button" @click="stornieren">Stornieren</button>
                 </div>
+                <div>
+                        <h5>Hier kannst du dein Profil Löschen</h5>
+                        <button type="button" @click="deleteUser">Löschen</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -155,6 +91,7 @@ const stornieren = () => {
     }
 };
 
+
 const deleteUser = async () => {
     const endpoint = 'http://localhost:8080/kunden';
 
@@ -175,7 +112,65 @@ const deleteUser = async () => {
         console.error('Error:', error);
     }
 };
+
+
+
+
+
+let slots: any[] = [];
+
+
+const url = 'http://localhost:8080/slots';
+
+window.onload = function () {
+    fetch(url)
+        .then((response) => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error(`Anfrage fehlgeschlagen mit Statuscode: ${response.status}`);
+            }
+        })
+        .then((jsonData) => {
+            slots = jsonData;
+            console.log(slots);
+        })
+        .catch((error) => {
+            console.error(`Ein Fehler ist aufgetreten: ${error.message}`);
+        })
+
+    const table = document.getElementById("json-table");
+    const tbody = table.querySelector("tbody");
+    // Loop through the JSON array and populate the table
+    slots.forEach(item => {
+        const row = document.createElement("tr");
+        const idCell = document.createElement("td");
+        const startZeitCell = document.createElement("td");
+        const endZeitCell = document.createElement("td");
+        const tischIdCell = document.createElement("td");
+        const reserviertCell = document.createElement("td");
+
+        idCell.textContent = item.id;
+        startZeitCell.textContent = item.startZeit;
+        endZeitCell.textContent = item.endZeit;
+        tischIdCell.textContent = item.tischId;
+        reserviertCell.textContent = item.reserviert;
+
+        row.appendChild(idCell);
+        row.appendChild(startZeitCell);
+        row.appendChild(endZeitCell);
+        row.appendChild(tischIdCell);
+        row.appendChild(reserviertCell);
+
+
+
+    })
+}
+
+
 </script>
+
+
 
 
 
