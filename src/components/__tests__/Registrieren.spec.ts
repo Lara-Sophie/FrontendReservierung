@@ -12,7 +12,6 @@ describe('RegistrierenView', () => {
         await fireEvent.update(getByPlaceholderText('BenutzerID'), '123');
         await fireEvent.update(getByPlaceholderText('Name'), 'Max Mustermann');
         await fireEvent.update(getByPlaceholderText('Telefonnummer'), '123456789');
-        await fireEvent.update(getByPlaceholderText('Allergien'), 'Nüsse');
         await fireEvent.update(getByPlaceholderText('Mail'), 'max@example.com');
 
         // Klicke auf den Registrieren-Button
