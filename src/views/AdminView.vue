@@ -55,7 +55,7 @@
 
                                     <div class="container" style=" margin: 0px; padding: 0px">
                                         <div name="serch_nr" class="element1" style=" marging: 0px; padding: 0px">
-                                            <input type="number" min="1" step="1" placeholder="Tischslot Nr">
+                                            <input v-model="TischNrTS" type="number" min="1" step="1" placeholder="Tischslot Nr">
                                         </div>
                                         <div name="delete_Tisch" class="element2" style=" marging: 0px; padding: 0px">
                                             <button @click="DeleteTischSlots"> Tischslot löschen </button>
@@ -136,10 +136,10 @@ async function deleteTisch() {
 
 const startDate = ref('');
 const startTime = ref('');
-const TischNrTS = ref('');
+
 
 async function AddTischSlots() {
-        const endpoint = 'http://localhost:8080/tischSlot';
+        const endpoint = 'http://localhost:8080/slots';
 
         try {
                 const response = await fetch(endpoint, {
@@ -162,10 +162,11 @@ async function AddTischSlots() {
                 console.error('Error:', error);
         }
 }
-
+const TischNrTS = ref('');
 async function DeleteTischSlots() {
-        const endpointUrl = 'http://localhost:8080/tischSlot/';
-        const endpointAttach = {TischNr};
+        const endpointUrl = 'http://localhost:8080/slots/';
+        const endpointAttach = TischNrTS.value;
+        console.log(endpointAttach);
         const endpoint = endpointUrl + endpointAttach;
 
         try {
