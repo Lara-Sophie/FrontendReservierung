@@ -6,6 +6,7 @@
             </div>
 
 
+
             <div name="table">
 
                 <p >  </p>
@@ -21,7 +22,27 @@
             </div>
 
 
+            <div class="container" style=" margin: 0px; padding: 0px">
+                <div class="element2"  style=" marging: 0px; padding: 0px">
+                    <button type="button" @click="loadReservations" data-tisch-id="1" data-slot="true">Reservieren</button>
+                </div>
+            </div>
+            <div class="container" style=" margin: 0px; padding: 0px">
+                <div name="BenutzerInput" class="element1">
+                    <div style="margin: 0px 0px 0px 10px; padding: 0px">
+                        <p>Ach willste uns verlassen?!</p>
+                    </div>
+                    <input v-model="BenutzerID" type="number" min="1" step="1" placeholder="BenutzerID">
+                    <button type="button" @click="deleteUser">Löschen</button>
+                </div>
 
+            </div>
+            <div>
+                <h5>Hier kannst du dein Profil Löschen</h5>
+                <button type="button" @click="deleteUser">Löschen</button>
+            </div>
+
+            </div>
         </div>
 
 
@@ -41,77 +62,74 @@
 
             <div style="margin: 0px">
                 <div style="margin: 0px">
-                        <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
-                        <button type="button" @click="stornieren">Stornieren</button>
-                </div>
-                <div>
-                        <h5>Hier kannst du dein Profil Löschen</h5>
-                        <button type="button" @click="deleteUser">Löschen</button>
-                </div>
 
+                    <button type="button" data-tisch-id="1" data-slot="true">Reservieren</button>
+                    <button type="button" data-tisch-id="1" data-slot="false">Stornieren</button>
+<!--                        <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
+                        <button type="button" @click="stornieren">Stornieren</button>-->
+
+                  </div>
             </div>
         </div>
-    </div>
+
+
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import {ref, reactive, computed} from "vue";
+const BenutzerID = ref('');
+async function registrierung() {
+    document.location.href = "http://localhost:5173/registrieren";
+}
 
 
-
-const Benutzername = ref('');
-const reservierteSlots: { tischId: number; slot: boolean }[] = reactive([]);
-
-const handleReservieren = (event: MouseEvent) => {
-    // Extrahiere die Daten aus den data-* Attributen des Elements
-    const tischId = (event.target as HTMLElement).dataset.tischId;
-    const slot = (event.target as HTMLElement).dataset.slot;
-
-    // Überprüfe, ob die Werte vorhanden sind, und konvertiere sie nach Bedarf
-    if (tischId && slot) {
-        reservieren(Number(tischId), slot === "true");
+const loadReservations = async (reservations) => {
+    try {
+        const response = await fetch('http://localhost:5173/tischSlots', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const result = await response.json();
+        console.log('Success:', result);
+        reservations.value = result;
+    } catch (error) {
+        console.error('Error:', error);
     }
 };
 
-const reservieren = (tischId:number, slot:boolean) => {
-    // Überprüfen, ob der Slot bereits reserviert ist
-    if (!reservierteSlots.some(r => r.tischId === tischId && r.slot === slot)) {
-        reservierteSlots.push({ tischId, slot });
-        console.log('Slot reserviert:', { tischId, slot });
-    } else {
-        console.log('Slot bereits reserviert');
-    }
-};
 
-const stornieren = () => {
-    const selectedReservierung = window.prompt('Geben Sie die Nummer der Reservierung ein:');
-    if (selectedReservierung !== null) {
-        reservierteSlots.splice(Number(selectedReservierung), 1);
-        console.log('Reservierung storniert:', selectedReservierung);
-    }
-};
+
+
+
+
+
 
 
 const deleteUser = async () => {
-    const endpoint = 'http://localhost:8080/kunden';
-
+    const endpointUrl = 'http://localhost:8080/kunden/';
+    const endpointAttach = BenutzerID.value;
+    const endpoint = endpointUrl + endpointAttach;
     try {
         const response = await fetch(endpoint, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({Benutzername: Benutzername.value}),
         });
 
         const result = await response.json();
         console.log('Success:', result);
+        showPopup("Profil gelöscht");
+        await registrierung();
 
-        // Führe weitere Aktionen nach dem Löschen durch, wenn nötig
+
     } catch (error) {
         console.error('Error:', error);
     }
 };
+
 
 
 
@@ -141,6 +159,7 @@ window.onload = function () {
 
     const table = document.getElementById("json-table");
     const tbody = table.querySelector("tbody");
+
     // Loop through the JSON array and populate the table
     slots.forEach(item => {
         const row = document.createElement("tr");
@@ -165,6 +184,26 @@ window.onload = function () {
 
 
     })
+}
+
+
+
+function showPopup(message:string) {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.style.position = 'fixed';
+    popup.style.top = '10px';
+    popup.style.left = '50%';
+    popup.style.transform = 'translateX(-50%)';
+    popup.style.background = '#4CAF50';
+    popup.style.color = 'white';
+    popup.style.padding = '10px';
+    popup.style.borderRadius = '5px';
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        document.body.removeChild(popup);
+    }, 3000);
 }
 
 

@@ -186,7 +186,7 @@ async function DeleteTischSlots() {
 }
 
 
-function showPopup(message) {
+function showPopup(message:string) {
     const popup = document.createElement('div');
     popup.textContent = message;
     popup.style.position = 'fixed';
