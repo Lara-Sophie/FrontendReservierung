@@ -42,18 +42,32 @@
 
                   <div>
                   </div>
+                  <div style=" margin: 0px ">
+                      <h2>Tische</h2>
 
-                  <div style="margin: 0px">
-                      <div style="margin: 0px">
+                      <div class="container" style=" margin: 0px; padding: 0px">
+                          <div name="TischInput" class="element1" style=" marging: 0px; padding: 0px">
+                              <input v-model="tischslotId" type="number" min="1" step="1" placeholder="anzahl Plätze">
+                              <input v-model="kundenId" type="number" min="1" step="1" placeholder="anzahl Plätze">
+                          </div>
+                          <div name="TischInput" class="element2"  style=" marging: 0px; padding: 0px">
+                              <button type="button" data-tisch-id="1" @click="AddReservierung">Reservieren</button>
+                          </div>
+                      </div>
 
-                          <button type="button" data-tisch-id="1" data-slot="true">Reservieren</button>
-                          <button type="button" data-tisch-id="1" data-slot="false">Stornieren</button>
+                      <hr style=" color: black">
 
-      <!--                        <button type="button" @click="handleReservieren" data-tisch-id="1" data-slot="true">Reservieren</button>
-                              <button type="button" @click="stornieren">Stornieren</button>-->
-
+                      <div class="container" style=" margin: 0px; padding: 0px">
+                          <div name="serch_nr" class="element1" style=" marging: 0px; padding: 0px">
+                              <input v-model="reservierungId" type="number" min="1" step="1" placeholder="TischNr">
+                          </div>
+                          <div name="delete_Reservierung" class="element2" style=" marging: 0px; padding: 0px">
+                              <button type="button" data-tisch-id="1" @click="deleteReservierung">Stornieren</button>
+                          </div>
                       </div>
                   </div>
+
+
               </div>
     </div>
 
@@ -168,7 +182,7 @@ window.onload = function () {
         }
 
         data.forEach(item => {
-            if (!item.reserviert) {
+
                 const row = table.insertRow();
                 const tischslotidCell = row.insertCell();
                 tischslotidCell.textContent = item.tischslotid.toString();
@@ -184,7 +198,7 @@ window.onload = function () {
                 const startzeitCell = row.insertCell();
                 const startzeitPart = item.startzeit[0] + "-" + item.startzeit[1] + "-" + item.startzeit[2] + " " + item.startzeit[3] + ":" + item.startzeit[4] + "0";
                 startzeitCell.textContent = startzeitPart.toString();
-            }
+
         });
 
         // Identifizieren Sie das Container-Element und fügen Sie die Tabelle hinzu
@@ -195,11 +209,58 @@ window.onload = function () {
     }
 }
 
+const kundenId = ref('');
+const tischslotId = ref('');
 
-// Funktion zum Erstellen und Hinzufügen einer Tabelle
+async function AddReservierung() {
+    const endpoint = 'http://localhost:8080/reservierungen';
 
 
-// Rufen Sie die Funktion auf und geben Sie die ID des Ziel-Containers an
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+
+                kundenId: kundenId.value,
+                tischslotId: tischslotId.value
+            })
+        });
+
+        const result = await response.json();
+        console.log('Success:', result);
+        showPopup("Tisch hinzugefügt")
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+const reservierungId = ref('');
+async function deleteReservierung() {
+    const endpointUrl = 'http://localhost:8080/reservierungen/';
+    const endpointAttach = reservierungId.value;
+    const endpoint = endpointUrl + endpointAttach;
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const result = await response.json();
+        console.log('Success:', result);
+        showPopup("Tisch gelöscht")
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 
 
